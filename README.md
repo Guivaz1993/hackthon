@@ -7,6 +7,9 @@ Link: https://bit.ly/3QdGkX1
 usuário:squad15@email.com
 senha:123456789
 
+Documentação:
+https://documenter.getpostman.com/view/20510257/Uyr4JKMh
+
 Membros do squad:
 UX/UI:
 - Erica Neres
