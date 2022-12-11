@@ -14,7 +14,7 @@ import { Get, Post } from "../../services/Conection";
 import { getItem } from "../../utils/Storage";
 
 export default function ModalPersonDetail() {
-  const { setOpenDetailPerson, currentPerson, setOpen, setToastMessage, setSeverity } =
+  const { setOpenDetailPerson, currentPerson, openToast } =
     useUser();
   const token = getItem("token");
 
@@ -42,9 +42,7 @@ export default function ModalPersonDetail() {
       setAbilities(data.habilidade);
       setAgenda(data.horarios);
     } catch (error) {
-      setOpen(true);
-      setToastMessage(error.message);
-      setSeverity("error");
+      openToast(error.message, "error");
     }
   }
 
@@ -57,39 +55,31 @@ export default function ModalPersonDetail() {
     e.preventDefault();
 
     if (!form.horario) {
-      setOpen(true);
-      setToastMessage("É necessário marcar um horário");
-      setSeverity("error");
-      return;
+      return openToast("É necessário marcar um horário", "error");
     }
 
     try {
       const { data, ok } = await Post(
         "/mentorias/marcar",
         {
-          usuario_id: 1,
+          mentor_id: currentPerson,
           agenda_id: form.horario,
         },
         token
       );
 
       if (!ok) {
-        setOpen(true);
-        setToastMessage(data);
-        setSeverity("error");
-        return;
+        return openToast(data, "error");
       }
 
       setForm({
         horario: "",
       });
-      setOpen(true);
-      setToastMessage("Mentoria Marcada com sucesso");
+
       setOpenDetailPerson(false);
+      return openToast("Mentoria Marcada com sucesso", "success");
     } catch (error) {
-      setOpen(true);
-      setToastMessage(error.message);
-      setSeverity("error");
+      return openToast(error.message, "error");
     }
   }
 
@@ -107,8 +97,8 @@ export default function ModalPersonDetail() {
               className="DetailAvatar"
             />
             <span className="DetailName FontDetail">{person.nome}</span>
-            <span className="DetailPosition FontDetail">Ux Research</span>
-            <span className="DetailLevel FontDetail">Sênior</span>
+            <span className="DetailPosition FontDetail">{person.area}</span>
+            <span className="DetailLevel FontDetail">{person.bio}</span>
           </article>
         )}
         <article className="PersonSchedule">

@@ -16,7 +16,7 @@ export default function MenthorPage() {
   const { openDetailPerson } = useUser();
   const [menthors, setMenthors] = useState();
   const { areaId } = useParams();
-  const { setOpen, setToastMessage, setSeverity } = useUser();
+  const { openToast } = useUser();
   const token = getItem("token");
 
   async function loadMenthor() {
@@ -24,9 +24,7 @@ export default function MenthorPage() {
       const response = await Get(`/mentorias/filtroArea?area=${areaId}`, token);
       setMenthors(response.data);
     } catch (error) {
-      setOpen(true);
-      setToastMessage(error.message);
-      setSeverity("error");
+      openToast(error.message, "error");
     }
   }
 
@@ -46,6 +44,7 @@ export default function MenthorPage() {
             <Card
               key={menthor.id}
               avatar={menthor.avatar}
+              area={menthor.area}
               name={menthor.nome}
               id={menthor.id}
             />

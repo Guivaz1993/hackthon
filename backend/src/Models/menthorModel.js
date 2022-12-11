@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 const knex = require("../Server/conexao");
 
 const listMenthorByArea = async (area) => {
@@ -7,7 +8,7 @@ const listMenthorByArea = async (area) => {
       "usuarios.nome",
       "usuarios.bio",
       "usuarios.avatar",
-      "usuarios.area"
+      "usuarios.area",
     )
     .join("usuarios", "agenda.usuario_id", "=", "usuarios.id")
     .join("areausuarios", "areausuarios.usuario_id", "=", "usuarios.id")

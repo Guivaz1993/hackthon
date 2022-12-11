@@ -2,7 +2,7 @@
 import "./styles.css";
 import useUser from "../../hooks/useUser";
 
-export default function Card({ avatar, name, id }) {
+export default function Card({ avatar, area, name, id }) {
   const { setOpenDetailPerson, setCurrentPerson } = useUser();
 
   function openDetail() {
@@ -15,8 +15,8 @@ export default function Card({ avatar, name, id }) {
       <div className="PersonContent">
         <img src={avatar} alt="Profile Icon" className="PersonAvatar" />
         <span className="PersonName">{name}</span>
-        <span className="PersonPosition">Ux Research</span>
-        <span className="PersonLevel">Sênior</span>
+        <span className="PersonPosition">{area}</span>
+        {/* <span className="PersonLevel">Sênior</span> */}
       </div>
       <button
         type="button"

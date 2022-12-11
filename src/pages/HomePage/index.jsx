@@ -14,7 +14,7 @@ export default function HomePage() {
   const { openModal, setOpenModal } = useUser();
 
   return (
-    <>
+    <section className="HomePage">
       {openModal && <ModalMenthor />}
       <section className="GreenSection">
         <div className="TextGreen">
@@ -23,11 +23,10 @@ export default function HomePage() {
             Conectando pessoas interessadas pela tecnologia
           </h2>
         </div>
-
         <img src={girl} alt="Tech Share" className="GirlGreen" />
-        <img src={girl2} alt="Technical Share" className="BottomGirl" />
       </section>
       <section className="BtnSection ">
+        <img src={girl2} alt="Technical Share" className="BottomGirl" />
         <button
           type="button"
           className="MenthorBtn BtnHome"
@@ -43,6 +42,6 @@ export default function HomePage() {
           Tirar Dúvida
         </button>
       </section>
-    </>
+    </section>
   );
 }

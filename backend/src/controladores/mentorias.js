@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 const conexao = require("../Server/conexao");
 
 const utilsModel = require("../Models/utilsModel");
@@ -8,7 +9,7 @@ const notificationModel = require("../Models/notificationModel");
 
 const messageError = require("../Mensagens/errorToast");
 
-//ok
+// ok
 const filtrarMentorArea = async (req, res) => {
   const { area } = req.query;
 
@@ -23,12 +24,12 @@ const filtrarMentorArea = async (req, res) => {
       return res.status(400).json(messageError.utilsNotFound);
     }
 
-    res.status(200).json(mentores);
+    return res.status(200).json(mentores);
   } catch (error) {
     return res.status(400).json(error.message);
   }
 };
-//ok
+// ok
 const obterMentor = async (req, res) => {
   const { mentor } = req.params;
 
@@ -47,7 +48,7 @@ const obterMentor = async (req, res) => {
 
     const schedule = await menthorModel.getMenthorSchedule(mentor);
 
-    res.status(200).json({
+    return res.status(200).json({
       mentor: menthor,
       habilidade:
         menthorSkills.length !== 0
@@ -59,7 +60,8 @@ const obterMentor = async (req, res) => {
     return res.status(400).json(error.message);
   }
 };
-//ok
+
+// ok
 const marcarMentoria = async (req, res) => {
   const { id: usuario_id } = req.usuario;
   const { agenda_id, mentor_id } = req.body;
@@ -77,7 +79,7 @@ const marcarMentoria = async (req, res) => {
 
     const novaMentoria = await menthorModel.scheduleMentorship(
       usuario_id,
-      agenda_id
+      agenda_id,
     );
 
     if (!novaMentoria) {
@@ -107,7 +109,7 @@ const marcarMentoria = async (req, res) => {
 
     const notificaoMentorado = await notificationModel.createNotification(
       usuario_id,
-      mensagemMentorado
+      mensagemMentorado,
     );
 
     if (!notificaoMentorado) {
@@ -116,7 +118,7 @@ const marcarMentoria = async (req, res) => {
 
     const notificaoMentor = await notificationModel.createNotification(
       mentor_id,
-      mensagemMentor
+      mensagemMentor,
     );
 
     if (notificaoMentor.rowCount === 0) {
@@ -128,7 +130,7 @@ const marcarMentoria = async (req, res) => {
     return res.status(500).json(error.message);
   }
 };
-//ok
+// ok
 const listarMentoriasMarcadas = async (req, res) => {
   const { id: usuario_id } = req.usuario;
 
@@ -152,14 +154,14 @@ const listarMentoriasMarcadas = async (req, res) => {
 const listarMentores = async (req, res) => {
   try {
     const mentores = await conexao.query(
-      "SELECT usuarios.id,usuarios.nome,usuarios.bio, usuarios.avatar FROM agenda LEFT JOIN usuarios ON agenda.usuario_id = usuarios.id GROUP BY usuarios.id"
+      "SELECT usuarios.id,usuarios.nome,usuarios.bio, usuarios.avatar FROM agenda LEFT JOIN usuarios ON agenda.usuario_id = usuarios.id GROUP BY usuarios.id",
     );
 
     if (mentores.rowCount === 0) {
       return res.status(400).json("Não foi possível listar as mentorias");
     }
 
-    res.status(200).json(mentores.rows);
+    return res.status(200).json(mentores.rows);
   } catch (error) {
     return res.status(400).json(error);
   }
@@ -179,7 +181,7 @@ const disponibilizarHorario = async (req, res) => {
   try {
     const { rowCount: buscarUsuario } = await conexao.query(
       "SELECT * FROM usuarios WHERE id = $1",
-      [usuario_id]
+      [usuario_id],
     );
 
     if (buscarUsuario === 0) {
@@ -188,7 +190,7 @@ const disponibilizarHorario = async (req, res) => {
 
     const { rowCount: horarioExistente } = await conexao.query(
       "SELECT * FROM agenda WHERE usuario_id=$1 AND dia=$2 AND hora_id=$3",
-      [usuario_id, dia, hora_id]
+      [usuario_id, dia, hora_id],
     );
 
     if (horarioExistente > 0) {
@@ -199,7 +201,7 @@ const disponibilizarHorario = async (req, res) => {
 
     const novoHorario = await conexao.query(
       "INSERT INTO agenda (usuario_id,dia,hora_id) VALUES ( $1,$2,$3)",
-      [usuario_id, dia, hora_id]
+      [usuario_id, dia, hora_id],
     );
 
     if (novoHorario.rowCount === 0) {
@@ -208,7 +210,7 @@ const disponibilizarHorario = async (req, res) => {
         .json({ mensagem: "Não foi possível inserir o horário." });
     }
 
-    res.status(201).json({ mensagem: "Horário inserido com sucesso" });
+    return res.status(201).json({ mensagem: "Horário inserido com sucesso" });
   } catch (error) {
     return res.status(400).json(error);
   }

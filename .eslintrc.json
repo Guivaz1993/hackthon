@@ -32,10 +32,7 @@
             "error",
             "double"
         ],
-        "linebreak-style": [
-            "error",
-            "windows"
-        ],
+        "linebreak-style": "off",
         "react/jsx-indent": "off",
         "indent": "off",
         "object-curly-newline": "off"

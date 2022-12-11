@@ -1,13 +1,13 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import { useNavigate } from "react-router-dom";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Post } from "../../services/Conection";
 
 import "./styles.css";
 
 import useUser from "../../hooks/useUser";
-import { setItem } from "../../utils/Storage";
+import { getItem, setItem } from "../../utils/Storage";
 
 export default function LoginPage() {
   const { openToast } = useUser();
@@ -48,6 +48,13 @@ export default function LoginPage() {
       return openToast(error.message, "error");
     }
   }
+
+  useEffect(() => {
+    const token = getItem("token");
+    if (token) {
+      navigate("/home");
+    }
+  }, []);
 
   return (
     <section className="LoginPage">

@@ -22,7 +22,7 @@ export default function ToastNotification() {
     >
       <Alert
         onClose={handleClose}
-        severity={severity}
+        severity={severity || "error"}
         sx={{ width: "100%", fontSize: 16 }}
       >
         {toastMessage}
